@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./Pages/HomePage/HomePage";
+import Footer from "./Components/Footer/Footer";
+import Header from "./Components/Header/Header";
+import { StyledBody } from "./app.styled";
+import { useState } from "react";
+import { Theme, ThemeContext } from "./themeContext";
+import Contact from "./Pages/Contact/Contact";
 
 function App() {
+  const [theme, setTheme] = useState<Theme>("dark");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <StyledBody theme={theme}>
+        <Header
+          logo={theme === "dark" ? "/images/darklogo.svg" : "/images/logo.svg"}
+          firstMenuWord="მთავარი"
+          secondMenuWord="სერვისები"
+          thirdMenuWord="პარტნიორები"
+          fourthMenuWord="ჩვენს შესახებ"
+          fifthMenuWord="კონტაქტი"
+        />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </BrowserRouter>
+        <Footer />
+      </StyledBody>
+    </ThemeContext.Provider>
   );
 }
 
